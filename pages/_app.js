@@ -38,6 +38,7 @@ export default function MainApp(props) {
   const [filteredAlbumsData, setFilteredAlbumsData] = useState([]);
   const [filteredResultsCategories, setFilteredResultsCategories] = useState([]);
   
+  const [arrowKeyLateralListIndex, setArrowKeyLateralListIndex] = React.useState(0);
   const [arrowKeyItemIndex, setArrowKeyItemIndex] = React.useState(0);
   const [arrowKeyLateralItemIndex, setArrowKeyLateralItemIndex] = React.useState(0);
   const [mounted, setMounted] = React.useState(false)
@@ -140,7 +141,9 @@ export default function MainApp(props) {
                   arrowKeyItemIndex, 
                   setArrowKeyItemIndex,
                   arrowKeyLateralItemIndex, 
-                  setArrowKeyLateralItemIndex
+                  setArrowKeyLateralItemIndex,
+                  arrowKeyLateralListIndex, 
+                  setArrowKeyLateralListIndex
                 }}
               >
                 

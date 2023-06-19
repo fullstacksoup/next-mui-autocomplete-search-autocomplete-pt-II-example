@@ -31,6 +31,8 @@ export default function PostSearchResultList(props) {
          setArrowKeyItemIndex,
          arrowKeyLateralItemIndex, 
          setArrowKeyLateralItemIndex,
+         arrowKeyLateralListIndex, 
+         setArrowKeyLateralListIndex
       } = useContext(RootCompContext);
 
   React.useEffect(() => {
@@ -58,7 +60,7 @@ export default function PostSearchResultList(props) {
         {filteredPostsData.slice(0, maxRecordsReturned).map((item, index) => (
           <ListItemButton
             key={item.id}
-            sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: arrowKeyItemIndex===index ? '#EFEFEF' : 'background.paper' }}
+            sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: (arrowKeyLateralListIndex ===0 && arrowKeyItemIndex===index) ? '#EFEFEF' : 'background.paper' }}
             // onClick={() => props.handleSelectedProduct(item.id, item.handle, item.title, item.images.edges[0].node.url)}
           >
             <ListItemIcon sx={{ color: 'inherit' }}>

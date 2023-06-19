@@ -12,8 +12,19 @@ import Link from 'next/link';
 export default function AlbumSearchResultList(props) {  
   
   const [searchTerms, setSearchTerms] = React.useState([])  
-  const {searchTerm, filteredAlbumsData,  maxRecordsReturned } = useContext(RootCompContext);
-
+  
+  const {searchTerm, 
+    filteredAlbumsData, 
+    filteredResults, 
+    setFilteredResults, 
+    maxRecordsReturned, 
+    arrowKeyItemIndex, 
+    setArrowKeyItemIndex,
+    arrowKeyLateralItemIndex, 
+    setArrowKeyLateralItemIndex,
+    arrowKeyLateralListIndex, 
+    setArrowKeyLateralListIndex
+ } = useContext(RootCompContext);
 
   React.useEffect(() => {
     var searchStr = []
@@ -37,10 +48,10 @@ export default function AlbumSearchResultList(props) {
       </Typography>
 
       <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-        {filteredAlbumsData.slice(0, maxRecordsReturned).map((item) => (
+        {filteredAlbumsData.slice(0, maxRecordsReturned).map((item, index) => (
           <ListItemButton
             key={item.id}
-            sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)' }}
+            sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: (arrowKeyLateralListIndex === 1 && arrowKeyItemIndex===index) ? '#EFEFEF' : 'background.paper' }}
             // onClick={() => props.handleSelectedProduct(item.id, item.handle, item.title, item.images.edges[0].node.url)}
           >
             <ListItemIcon sx={{ color: 'inherit' }}>

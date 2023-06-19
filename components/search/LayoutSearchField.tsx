@@ -88,12 +88,16 @@ export default function LayoutSearchField(props) {
     setArrowKeyItemIndex,
     arrowKeyLateralItemIndex, 
     setArrowKeyLateralItemIndex,
+    arrowKeyLateralListIndex, 
+    setArrowKeyLateralListIndex,
     selectProduct, 
     setSelectProduct
   } = useContext(RootCompContext);
        
   const arrowUpPressed = useKeyPress('ArrowUp');
   const arrowDownPressed = useKeyPress('ArrowDown');
+  const arrowLeftPressed = useKeyPress('ArrowLeft');
+  const arrowRightPressed = useKeyPress('ArrowRight');
   const enterKeyPressed = useKeyPress('Enter');
   const [ counter, setCounter ] = React.useState(0);
   const [ displaySearchTerm, setDisplaySearchTerm ] = React.useState('');
@@ -131,6 +135,38 @@ export default function LayoutSearchField(props) {
       setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
     }
   }, [arrowDownPressed]);
+
+
+  React.useEffect(() => {
+    if (arrowLeftPressed) {
+      console.log('arrowDownPressed');
+      if(arrowKeyLateralListIndex === 1) {
+        setArrowKeyLateralListIndex(0)
+        setCounter(0)
+        setArrowKeyItemIndex(0);      
+      }      
+      setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
+    }
+  }, [arrowLeftPressed]);
+
+  
+  React.useEffect(() => {
+    if (arrowRightPressed) {
+      console.log('arrowDownPressed');
+      if(arrowKeyLateralListIndex === 0) {
+        setArrowKeyLateralListIndex(1)
+        setCounter(0)
+        console.log('right key counter', counter);
+        console.log('right key arrowKeyLateralListIndex', arrowKeyItemIndex);
+        
+        setArrowKeyItemIndex(0);
+        
+      }      
+      setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
+    }
+  }, [arrowRightPressed]);
+
+  
 
   React.useEffect(() => {
     if (enterKeyPressed) {
