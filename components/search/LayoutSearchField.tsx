@@ -9,6 +9,7 @@ import { Box, Stack } from "@mui/material";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { useRouter } from 'next/router'
 import SearchResultsGrid from "./SearchResultsGrid";
+import DialogShowRecord from "./DialogShowRecord";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,138 +70,145 @@ const SearchClearIconWrapper = styled('div')(({ theme }) => ({
   zIndex: 99,
 }));
 
+interface IPhotoRecord { 
+  id: number,
+  title: string, 
+  category: string  
+} 
+
+
+interface IPostRecord { 
+  id: number,
+  title: string, 
+  category: string  
+} 
+
+
 export default function LayoutSearchField(props) {
   const router = useRouter()
-  var searchInputRef = useRef();
- 
+  var searchInputRef = useRef<HTMLInputElement>();
+  const [showRecordDialog, setShowRecordDialog] = React.useState<boolean>(false);
   const [showResults, setShowResults] = React.useState(false);
+  
+  const [chosenRecord, setChosenRecord] = React.useState<IPhotoRecord | undefined>(undefined);
   const {
     searchTerm,
     setSearchTerm,        
     postsData,
-    albumData,    
+    photosData,    
     setFilteredPostsData,    
-    filteredPostsData,
-    setFilteredAlbumsData,    
-    filteredAlbumsData,
+    filteredPostsData,    
+    setFilteredPhotosData,
     setFilteredResultsCategories,
     arrowKeyItemIndex, 
-    setArrowKeyItemIndex,
-    arrowKeyLateralItemIndex, 
-    setArrowKeyLateralItemIndex,
-    arrowKeyLateralListIndex, 
-    setArrowKeyLateralListIndex,
-    selectProduct, 
+    setArrowKeyItemIndex, 
     setSelectProduct
   } = useContext(RootCompContext);
        
   const arrowUpPressed = useKeyPress('ArrowUp');
   const arrowDownPressed = useKeyPress('ArrowDown');
-  const arrowLeftPressed = useKeyPress('ArrowLeft');
-  const arrowRightPressed = useKeyPress('ArrowRight');
+  // const arrowLeftPressed = useKeyPress('ArrowLeft');
+  // const arrowRightPressed = useKeyPress('ArrowRight');
   const enterKeyPressed = useKeyPress('Enter');
   const [ counter, setCounter ] = React.useState(0);
   const [ displaySearchTerm, setDisplaySearchTerm ] = React.useState('');
+  const [ isTraverList, setIsTraverList ] = React.useState(false);
 
-  //*************************************************************************************************************************** */
   //*  U P   A N D   D O W N   A R R O W S    P R E S S E D 
-  //*************************************************************************************************************************** */
-
+  
   React.useEffect(() => {
     if (arrowUpPressed) {
       console.log('arrowUpPressed');
       if(arrowKeyItemIndex > 0) {
-        setCounter(counter - 1)
-        console.log('up key counter', counter);
-        console.log('up key arrowKeyItemIndex', arrowKeyItemIndex);
+        setCounter(counter - 1)        
         const index = arrowKeyItemIndex - 1;
-        setArrowKeyItemIndex(arrowKeyItemIndex - 1);
-        console.log('up key', index);
+        setArrowKeyItemIndex(arrowKeyItemIndex - 1);        
       }
       setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
+      // setSearchTerm(filteredPostsData[arrowKeyItemIndex].title)
     }
   }, [arrowUpPressed]);
 
   React.useEffect(() => {
     if (arrowDownPressed) {
-      console.log('arrowDownPressed');
-      if(arrowKeyItemIndex <= 15) {
+
+      if(arrowKeyItemIndex <= filteredPostsData.length-2) {
         setCounter(counter + 1)
-        console.log('down key counter', counter);
-        console.log('down key arrowKeyItemIndex', arrowKeyItemIndex);
         const index = arrowKeyItemIndex + 1;
         setArrowKeyItemIndex(arrowKeyItemIndex + 1);
-        console.log('down key', index);
       }      
       setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
+     // setSearchTerm(filteredPostsData[arrowKeyItemIndex].title)
     }
   }, [arrowDownPressed]);
 
-
   React.useEffect(() => {
-    if (arrowLeftPressed) {
-      console.log('arrowDownPressed');
-      if(arrowKeyLateralListIndex === 1) {
-        setArrowKeyLateralListIndex(0)
-        setCounter(0)
-        setArrowKeyItemIndex(0);      
-      }      
-      setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
-    }
-  }, [arrowLeftPressed]);
-
-  
-  React.useEffect(() => {
-    if (arrowRightPressed) {
-      console.log('arrowDownPressed');
-      if(arrowKeyLateralListIndex === 0) {
-        setArrowKeyLateralListIndex(1)
-        setCounter(0)
-        console.log('right key counter', counter);
-        console.log('right key arrowKeyLateralListIndex', arrowKeyItemIndex);
-        
-        setArrowKeyItemIndex(0);
-        
-      }      
-      setDisplaySearchTerm(filteredPostsData[arrowKeyItemIndex].title)
-    }
-  }, [arrowRightPressed]);
-
-  
-
-  React.useEffect(() => {
-    if (enterKeyPressed) {
-      
-      console.log('Enter key pressed', filteredPostsData[arrowKeyItemIndex]);
-      const {id, handle, title, images}  = filteredPostsData[arrowKeyItemIndex]
-      console.log(images.edges[0].node.url)
+    if (enterKeyPressed) {   
+      const { id, title } = filteredPostsData[arrowKeyItemIndex]      
+      setChosenRecord(filteredPostsData[arrowKeyItemIndex])
       setDisplaySearchTerm(title);
       setSearchTerm(title);
-      // setFilteredResults([]);      
       setShowResults(false);            
-      // router.push(`/product/${handle}`)
+      setShowRecordDialog(true)
+      // router.push(`/product/${id}`)
     }
   }, [enterKeyPressed]);
+  
+  const handleCloseRecordDialogBox = () => {
+     setShowRecordDialog(false)
+  }
+   
+  //*  H A N D L E   S E L E C T   P H O T O    R E C O R D 
+  
+  const handleSelectedPhoto = (id, title, category) => {
+    
+    const chosenRecord: IPhotoRecord = { 
+      id: id, 
+      title: title, 
+      category: category
+    } 
+    console.log('handleSelectedPhoto', chosenRecord)
+    setChosenRecord(chosenRecord)
+    setShowRecordDialog(true)
+    
+  }
+  
+  //*  H A N D L E   S E L E C T   P H O T O    R E C O R D 
 
+  const handleSelectedPost = (id, title, category) => {
+    
+    const chosenRecord: IPhotoRecord = { 
+      id: id, 
+      title: title, 
+      category: category
+    } 
+    console.log('handleSelectedPhoto', chosenRecord)
+    setChosenRecord(chosenRecord)
+    setShowRecordDialog(true)
+    
+  }
 
-  //*************************************************************************************************************************** */
+  
   //*  O T H E R   K E Y S   P R E S S E D 
-  //*************************************************************************************************************************** */
-
+  
   React.useEffect(() => {
     setArrowKeyItemIndex(0)
   }, [searchTerm]);
 
-
-  //*************************************************************************************************************************** */
+ 
   //*  H A N D L E   S E A R C H   T E R M   C H A N G E D
-  //*************************************************************************************************************************** */
-
+  
   const handleSearchTerm = (e) => {
     setSearchTerm(e.target.value);
-    var tmpPostsData = [];
-    var tmpAlbumsData = [];
-    var tmpCategoriesData = [];
+
+    // Make sure results are showing when typing
+    if(showResults === false) {
+      setShowResults(true);        
+    }
+    
+    const tmpPostsData: IPostRecord[] = [];    
+    const tmpPhotosData: IPhotoRecord[]  = [];
+    const tmpCategoriesData: any  = [];
 
     if (e.target.value.length > 0) {      
       
@@ -210,75 +218,65 @@ export default function LayoutSearchField(props) {
             .toLowerCase()
             .includes(e.target.value.toLowerCase())
         ) {
-          console.log('FOUND', element.title.toLowerCase())                  
+
           tmpPostsData.push(element);
+
           if(!tmpCategoriesData.includes(element.category)){
             tmpCategoriesData.push(element.category)
-          }
-          
+          }          
         }
       });
 
-      albumData.forEach((element) => {
-          if (
-            element.title
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase())
-          ) {
-            tmpAlbumsData.push(element);
-            if(!tmpCategoriesData.includes(element.category)){
-              tmpCategoriesData.push(element.category)
-            }
-            }
+      photosData.forEach((element) => {
+        if (
+          element.title
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase())
+        ) {
+          tmpPhotosData.push(element);
+          if(!tmpCategoriesData.includes(element.category)){
+            tmpCategoriesData.push(element.category)
+          }
+        }
       });    
       
       setFilteredResultsCategories(tmpCategoriesData)
-      setFilteredPostsData(tmpPostsData);
-      setFilteredAlbumsData(tmpAlbumsData);        
+      setFilteredPostsData(tmpPostsData.splice(0, 9));
+      setFilteredPhotosData(tmpPhotosData);        
     }
 
   };
-
-
-   //*************************************************************************************************************************** */
+  
   //*  H A N D L E   O P E N   /   S H O W    S E A R C H
-  //*************************************************************************************************************************** */
-
+  
   const handleOpenSearchResults = () => {    
     setShowResults(true);
   };
 
-  
- //*************************************************************************************************************************** */
+   
   //*  H A N D L E   S E L E C T   P R O D U C T   W I T H   M O U S E   C L I C K 
-  //*************************************************************************************************************************** */
 
   const handleSelectedProduct = (id) => {
     setSelectProduct(id);
     setShowResults(false);    
 //    router.push(`/product/${handle}`)
   
-  };
-
+  };  
   
-  //*************************************************************************************************************************** */
   //*  H A N D L E   C L E A R   S E A R C H   T E R M   C H A N G E D
-  //*************************************************************************************************************************** */
-
-
+    
   const handleClearSearchTerm = (e) => {
     setSearchTerm('');
     setDisplaySearchTerm('')
     setFilteredPostsData([]);
-    setFilteredAlbumsData([]);  
-    searchInputRef.focus();
+    setFilteredPhotosData([]);  
+    searchInputRef.current.focus();
   };
 
   return (
     <>
       <Box
-        alignContent="center"
-        
+        alignContent="center"        
         sx={{  position: "absolute", top: "1vh", left: "20vw", zIndex: 99 }}
       >
         <ClickAwayListener onClickAway={() => setShowResults(false)}>
@@ -290,11 +288,11 @@ export default function LayoutSearchField(props) {
                 </SearchIconWrapper>
                 <SearchClearIconWrapper >
                   {searchTerm.length > 0 && 
-                  <ClearIcon onClick={(e) => handleClearSearchTerm(e)}/>
+                    <ClearIcon onClick={(e) => handleClearSearchTerm(e)}/>
                   }
                 </SearchClearIconWrapper>
                 <StyledInputBase
-                  inputRef={(input) => { searchInputRef = input }}
+                  inputRef={(input) => { searchInputRef.current = input }}
                   size="small"
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search Products"
@@ -306,6 +304,8 @@ export default function LayoutSearchField(props) {
               </Search>
               
               <SearchResultsGrid
+                handleSelectedPhoto={handleSelectedPhoto}
+                handleSelectedPost={handleSelectedPost}
                 showResults={showResults}
                 searchTerm={searchTerm}                
                 handleSelectedProduct={handleSelectedProduct}
@@ -314,14 +314,19 @@ export default function LayoutSearchField(props) {
           </Box>
         </ClickAwayListener>
       </Box>
+      {chosenRecord &&
+      <DialogShowRecord data={chosenRecord} 
+                        handleClose={handleCloseRecordDialogBox}
+                        open={showRecordDialog}/>
+      }
     </>
   );
 }
 
 
-//*************************************************************************************************************************** */
+
 //*  C U S T O M   H O O K   T O   H A N D L E   K E Y B O A R D   E V E N T S
-//*************************************************************************************************************************** */
+
 
 const useKeyPress = (targetKey) => {
   const [keyPressed, setKeyPressed] = React.useState(false);

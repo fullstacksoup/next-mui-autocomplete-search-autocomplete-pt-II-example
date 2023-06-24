@@ -4,10 +4,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import SearchResultList from "./PostSearchResultList";
-import SearchHistoryList from "./SearchHistoryList";
-import AlbumSearchResultList from './AlbumSearchResultList'
+import PhotoSearchResultList from './PhotoSearchResultList'
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import { useContext } from 'react'
 import { RootCompContext } from "@/pages/_app";
 
@@ -20,24 +18,20 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function BasicGrid(props) {
-  console.log("BasicGrid props", props);
+  
   const {
     filteredPostsData, 
     setFilteredPostsData,
-    filteredAlbumsData, 
-    setFilteredAlbumsData,
+    filteredPhotosData, 
+    setFilteredPhotosData,
     filteredResultsCategories
     } = useContext(RootCompContext);
 
   const [searchTerm, setSearchTerm] = React.useState(null);
-  console.log("BasicGrid props.searchTerm", props.searchTerm);
-  console.log("BasicGrid filteredPostsData", filteredPostsData);
-  console.log("BasicGrid filteredAlbumsData", filteredAlbumsData);
-  console.log("BasicGrid filteredResultsCategories", filteredResultsCategories);
-  
+
   React.useEffect(() => {
     setFilteredPostsData(props.filteredPostsData);
-    setFilteredAlbumsData(props.filteredAlbumsData);
+    setFilteredPhotosData(props.filteredPhotosData);
   }, [props.data]);
 
   React.useEffect(() => {
@@ -68,14 +62,14 @@ export default function BasicGrid(props) {
         >
         <Grid container spacing={1} columns={16}>
           <Grid item xs={16}>
-            {(!Boolean(filteredPostsData) && !Boolean(filteredAlbumsData)) &&
+            {(!Boolean(filteredPostsData) && !Boolean(filteredPhotosData)) &&
               <Box sx={{ '& > :not(style)': { m: 0.5 } }}>
                 {staticCategories.map((elem, index) => (
                   <Chip label={elem} key={index} variant="outlined" color="primary"/>  
                 ))}
               </Box>
             }
-            {(Boolean(filteredPostsData) || Boolean(filteredAlbumsData)) &&
+            {(Boolean(filteredPostsData) || Boolean(filteredPhotosData)) &&
               <Box sx={{ '& > :not(style)': { m: 0.5 } }}>
                 {filteredResultsCategories.map((elem, index) => (
                   <Chip label={elem} key={index} variant="outlined" color="primary"/>  
@@ -86,14 +80,14 @@ export default function BasicGrid(props) {
 
           <Grid item xs={8}>
             {Boolean(filteredPostsData) &&
-              <Box style={{margin: 1, maxHeight: '47vh', overflow: 'auto'}}>
+              <Box style={{margin: 1, maxHeight: '49vh', overflow: 'auto'}}>
                 {(filteredPostsData.length > 0) && (
                   <>    
                     <SearchResultList
                       key={1}
                       data={filteredPostsData}
                       
-                      handleSelectedProduct={props.handleSelectedProduct}
+                      handleSelectedPost={props.handleSelectedPost}
                       searchTerm={props.searchTerm}
                     />
                   </>
@@ -103,15 +97,15 @@ export default function BasicGrid(props) {
           </Grid>
           
           <Grid item xs={8}>
-            {Boolean(filteredAlbumsData) &&
-              <Box style={{margin: 1, maxHeight: '47vh', overflow: 'auto'}}>
-              {(filteredAlbumsData.length > 0) && (
+            {Boolean(filteredPhotosData) &&
+              <Box style={{margin: 1, maxHeight: '49vh', overflow: 'auto'}}>
+              {(filteredPhotosData.length > 0) && (
                 <>    
-                  <AlbumSearchResultList
+                  <PhotoSearchResultList
                     key={2}
-                    data={filteredAlbumsData}
+                    data={filteredPhotosData}
                     
-                    handleSelectedProduct={props.handleSelectedProduct}
+                    handleSelectedPhoto={props.handleSelectedPhoto}
                     searchTerm={props.searchTerm}
                   />
                 </>
@@ -142,5 +136,7 @@ const staticCategories = [
   "Pop",
   "Dark Synth",
   "Funk",
-  "Punk"
+  "Punk",
+  "Nature",
+  "Landscape"
 ]

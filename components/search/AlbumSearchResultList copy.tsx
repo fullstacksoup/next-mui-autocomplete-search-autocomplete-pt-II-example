@@ -14,7 +14,7 @@ export default function AlbumSearchResultList(props) {
   const [searchTerms, setSearchTerms] = React.useState([])  
   
   const {searchTerm, 
-    filteredAlbumsData, 
+    filteredPhotosData, 
     filteredResults, 
     setFilteredResults, 
     maxRecordsReturned, 
@@ -41,14 +41,14 @@ export default function AlbumSearchResultList(props) {
   
   return (
     <>   
-      {(filteredAlbumsData.length > 0 && searchTerm.length > 0) && 
+      {(filteredPhotosData.length > 0 && searchTerm.length > 0) && 
       <>  
       <Typography variant='subtitle1' sx={{mt: 2, ml: 2, color: 'black'}}>
         Album Search Results
       </Typography>
 
       <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-        {filteredAlbumsData.slice(0, maxRecordsReturned).map((item, index) => (
+        {filteredPhotosData.slice(0, maxRecordsReturned).map((item, index) => (
           <ListItemButton
             key={item.id}
             sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: (arrowKeyLateralListIndex === 1 && arrowKeyItemIndex===index) ? '#EFEFEF' : 'background.paper' }}

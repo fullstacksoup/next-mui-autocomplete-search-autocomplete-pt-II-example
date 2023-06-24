@@ -1,0 +1,114 @@
+[
+    {
+        "albumId": 1,
+        "category": "Outdoors",
+        "id": 1,
+        "title": "Dirt Road",
+        "url": "http://localhost:3000/images/1.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Travel",
+        "id": 2,
+        "title": "Road to Mountain",
+        "url": "http://localhost:3000/images/2.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Technology",
+        "id": 3,
+        "title": "Mac Book",
+        "url": "http://localhost:3000/images/3.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Landscape",
+        "id": 4,
+        "title": "Bridge With Fog",
+        "url": "http://localhost:3000/images/4.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 5,
+        "title": "Mountains",
+        "url": "http://localhost:3000/images/5.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Photo",
+        "id": 6,
+        "title": "Clouds",
+        "url": "http://localhost:3000/images/6.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "City",
+        "id": 7,
+        "title": "Building",
+        "url": "http://localhost:3000/images/7.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 8,
+        "title": "Ocean to Land",
+        "url": "http://localhost:3000/images/8.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 9,
+        "title": "Waterfall",
+        "url": "http://localhost:3000/images/9.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 10,
+        "title": "Tree",
+        "url": "http://localhost:3000/images/10.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 11,
+        "title": "Beach",
+        "url": "http://localhost:3000/images/11.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Food",
+        "id": 12,
+        "title": "Berries",
+        "url": "http://localhost:3000/images/12.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Nature",
+        "id": 13,
+        "title": "Ocean Sunset",
+        "url": "http://localhost:3000/images/13.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    },
+    {
+        "albumId": 1,
+        "category": "Travel",
+        "id": 14,
+        "title": "Tunnel Road",
+        "url": "http://localhost:3000/images/15.jpg",
+        "thumbnailUrl": "https://picsum.photos/100"
+    }
+]

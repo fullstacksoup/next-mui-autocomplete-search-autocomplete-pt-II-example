@@ -10,6 +10,7 @@ import { useContext } from 'react'
 import { RootCompContext } from "@/pages/_app";
 import { Typography } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';
+import Highlighter from "react-highlight-words";
 import Link from 'next/link';
   
 const data = [
@@ -20,23 +21,17 @@ const data = [
 ];
   
 export default function PostSearchResultList(props) {  
-  console.log("SearchResultList props", props);
-  const [searchTerms, setSearchTerms] = React.useState([])  
+  
+  const [searchTerms, setSearchTerms] = React.useState<string[]>([])  
   const {searchTerm, 
          filteredPostsData, 
-         filteredResults, 
-         setFilteredResults, 
          maxRecordsReturned, 
-         arrowKeyItemIndex, 
-         setArrowKeyItemIndex,
-         arrowKeyLateralItemIndex, 
-         setArrowKeyLateralItemIndex,
-         arrowKeyLateralListIndex, 
-         setArrowKeyLateralListIndex
+         arrowKeyItemIndex,   
+         arrowKeyLateralListIndex
       } = useContext(RootCompContext);
 
   React.useEffect(() => {
-    var searchStr = []
+    var searchStr: string[] = []
     searchStr.push(`${props.searchTerm}`)
     
     setSearchTerms(searchStr)
@@ -52,28 +47,33 @@ export default function PostSearchResultList(props) {
     <>   
       {(filteredPostsData.length > 0 && searchTerm.length > 0) && 
       <>  
-      <Typography variant='subtitle1' sx={{mt: 2, ml: 2, color: 'black'}}>
-        Post Search Results {arrowKeyItemIndex}
-      </Typography>
+        <Typography variant='subtitle1' sx={{mt: 2, ml: 2, color: 'black'}}>
+          Post Search Results {arrowKeyItemIndex}
+        </Typography>
 
-      <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-        {filteredPostsData.slice(0, maxRecordsReturned).map((item, index) => (
-          <ListItemButton
-            key={item.id}
-            sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: (arrowKeyLateralListIndex ===0 && arrowKeyItemIndex===index) ? '#EFEFEF' : 'background.paper' }}
-            // onClick={() => props.handleSelectedProduct(item.id, item.handle, item.title, item.images.edges[0].node.url)}
-          >
-            <ListItemIcon sx={{ color: 'inherit' }}>
-            <MessageIcon/>
-            </ListItemIcon> 
-    
-            {item.title}
-                          
-        </ListItemButton>
-        ))}
-    </List>
-    </>
-     }
-     </>
+        <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+          {filteredPostsData.slice(0, maxRecordsReturned).map((item, index) => (
+            <ListItemButton
+              key={item.id}
+              sx={{ py: 0, minHeight: 42, color: 'rgba(5,5,5,.8)', bgcolor: (arrowKeyLateralListIndex ===0 && arrowKeyItemIndex===index) ? '#EFEFEF' : 'background.paper' }}              
+              onClick={() => props.handleSelectedPost(item.id, item.title, item.category)}
+            >
+              <ListItemIcon sx={{ color: 'inherit' }}>
+              <MessageIcon/>
+              </ListItemIcon> 
+      
+              <Highlighter
+                style={{color: 'black'}}
+                highlightClassName={Highlight}
+                searchWords={searchTerms}            
+                autoEscape={true}
+                textToHighlight={item.title}
+              />                      
+            </ListItemButton>
+          ))}
+        </List>
+      </>
+    }
+  </>
   );
 }

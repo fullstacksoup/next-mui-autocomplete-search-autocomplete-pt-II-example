@@ -25,31 +25,34 @@ export default function MainApp(props) {
   
   const { data, error } = useSWR('/api/getData', fetcher);
   
-  const [darkState, setDarkState] = React.useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredResults, setFilteredResults] = useState([]);
-  const [historyResults, setHistoryResults] = useState([]);
-  const [suggestionResults, setSuggestionResults] = useState([]);
-  const [maxRecordsReturned ] = useState(10);
-  const [selectProduct, setSelectProduct] = useState(null);
-  const [postsData, setPostsData] = useState([]);
-  const [albumData, setAlbumData] = useState([]);
-  const [filteredPostsData, setFilteredPostsData] = useState([]);
-  const [filteredAlbumsData, setFilteredAlbumsData] = useState([]);
-  const [filteredResultsCategories, setFilteredResultsCategories] = useState([]);
+  const [darkState, setDarkState] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredResults, setFilteredResults] = useState<any>([]);
+  const [historyResults, setHistoryResults] = useState<any>([]);
+  const [suggestionResults, setSuggestionResults] = useState<any>([]);
+  const [maxRecordsReturned ] = useState<number>(10);
+  const [selectProduct, setSelectProduct] = useState<any>(null);
+  const [postsData, setPostsData] = useState<any>([]);
+  const [photosData, setPhotosData] = useState<any>([]);
+  const [filteredPostsData, setFilteredPostsData] = useState<any>([]);
+  const [filteredPhotosData, setFilteredPhotosData] = useState<any>([]);
+  const [filteredResultsCategories, setFilteredResultsCategories] = useState<any>([]);
   
-  const [arrowKeyLateralListIndex, setArrowKeyLateralListIndex] = React.useState(0);
-  const [arrowKeyItemIndex, setArrowKeyItemIndex] = React.useState(0);
-  const [arrowKeyLateralItemIndex, setArrowKeyLateralItemIndex] = React.useState(0);
-  const [mounted, setMounted] = React.useState(false)
+  const [arrowKeyLateralListIndex, setArrowKeyLateralListIndex] = useState<number>(0);
+  const [arrowKeyItemIndex, setArrowKeyItemIndex] = useState<number>(0);
+  const [arrowKeyLateralItemIndex, setArrowKeyLateralItemIndex] = useState<number>(0);
+  const [mounted, setMounted] = useState<boolean>(false)
 
   React.useEffect(() => {
-    
+    setMounted(true)
     if(data) {
       setPostsData(data.posts);
-      setAlbumData(data.albums);  
+      setPhotosData(data.photos);  
     }
   
+    return () => {
+      
+    }
   }, [data])
 
   const theme = React.useMemo(
@@ -65,20 +68,20 @@ export default function MainApp(props) {
             // This is green.A700 as hex.
             main: '#11cb5f',
           },
+          // dark: {
+          //   // Purple and green play nicely together.
+          //   main: grey[700],            
+          // },
+          
+          // default: {
+          //   // Purple and green play nicely together.
+          //   main: grey[50]          
+          // },
           warning: {
             // Purple and green play nicely together.
             main: red[300],            
           },
-          dark: {
-            // Purple and green play nicely together.
-            main: grey[700],            
-          },
-          
-          default: {
-            // Purple and green play nicely together.
-            main: grey[50]          
-          },
-
+      
           mode: darkState? 'dark' : 'light',
           // mode: 'dark' ,
         },
@@ -104,8 +107,7 @@ export default function MainApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      
-        
+              
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
@@ -131,11 +133,11 @@ export default function MainApp(props) {
                   setSelectProduct,
                   maxRecordsReturned,
                   postsData,
-                  albumData,
+                  photosData,
                   filteredPostsData, 
                   setFilteredPostsData,
-                  filteredAlbumsData, 
-                  setFilteredAlbumsData,
+                  filteredPhotosData, 
+                  setFilteredPhotosData,
                   filteredResultsCategories, 
                   setFilteredResultsCategories,
                   arrowKeyItemIndex, 
@@ -146,12 +148,13 @@ export default function MainApp(props) {
                   setArrowKeyLateralListIndex
                 }}
               >
-                
+              <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>
               <AppLayout handleThemeChange={handleThemeChange} darkState={darkState}  mainPage={                  
                 <>         
                     <Component {...pageProps} /> 
                 </>}
               />
+              </div>
           </RootCompContext.Provider>
       
 
